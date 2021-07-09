@@ -1,12 +1,12 @@
-import React from "react";
-import { FlatList, StyleSheet } from "react-native";
-
+import React, { useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 
 import ListItem from "../config/ListItem";
+import ListItemDelete from "../config/ListItemDelete";
 import ListItemSeparator from "../config/ListItemSeparator";
 import Screen from "../config/Screen";
 
-const messages = [
+const defaultMessages = [
   {
     id: 1,
     title: "T1",
@@ -27,7 +27,18 @@ const messages = [
   },
 ];
 
+const swipeRightHandler = (id) => {
+  console.log(id)
+  return <ListItemDelete deleteHandler={deleteHandler} />
+};
+
+const deleteHandler = () => {
+  console.log("deleted");
+};
+
 function MessagesScreen(props) {
+  const [messages, setMessages] = useState(defaultMessages);
+
   return (
     <Screen>
       <FlatList
@@ -35,10 +46,12 @@ function MessagesScreen(props) {
         keyExtractor={(message) => message.id.toString()}
         renderItem={({ item }) => (
           <ListItem
+            id={item.id}
             title={item.title}
             subtitle={item.description}
             image={item.image}
-            onPress={() => console.log('Message', item)}
+            onPress={() => console.log("Message", item)}
+            right={swipeRightHandler}
           />
         )}
         ItemSeparatorComponent={ListItemSeparator}
@@ -47,8 +60,6 @@ function MessagesScreen(props) {
   );
 }
 
-const styles = StyleSheet.create({
-  
-});
+const styles = StyleSheet.create({});
 
 export default MessagesScreen;
